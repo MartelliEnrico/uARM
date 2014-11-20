@@ -1,7 +1,7 @@
-[DEBREATE-0.7.7]
+[DEBREATE-0.7.10]
 <<CTRL>>
 Package: uarm
-Version: 0.3.3
+Version: 0.3.4
 Section: devel
 Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Homepage: http://mellotanica.com/uarm
@@ -16,38 +16,39 @@ Description: Simple ARM7TDMI virtual machine
 <</CTRL>>
 <<FILES>>
 1
-/home/mello/microarm/qarm/facilities/uARMtypes.h -> uARMtypes.h -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/uARMconst.h -> uARMconst.h -> /usr/include/uarm
-/home/mello/microarm/qarm/default/uarm -> uarm -> /etc/default
-/home/mello/microarm/qarm/test/helloWorld.c -> helloWorld.c -> /usr/share/doc/uarm/examples
-/home/mello/microarm/qarm/README.txt -> README.txt -> /usr/share/doc/uarm
-/home/mello/microarm/qarm/icons/poweron.png -> poweron.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/facilities/BIOS.s -> BIOS.s -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/libuarm.o -> libuarm.o -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/crtso.o -> crtso.o -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/libuarm.S -> libuarm.S -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/crtso.S -> crtso.S -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/arch.h -> arch.h -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/libuarm.h -> libuarm.h -> /usr/include/uarm
-/home/mello/microarm/qarm/facilities/BIOS.rom.uarm -> BIOS.rom.uarm -> /usr/include/uarm
-/home/mello/microarm/qarm/icons/step_old.png -> step_old.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/disk-32.png -> disk-32.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/step.png -> step.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/play.png -> play.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/pause.png -> pause.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/window_default-48.png -> window_default-48.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/printer-32.png -> printer-32.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/config.png -> config.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/reset.png -> reset.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/stop.png -> stop.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/tape-32.png -> tape-32.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/network-32.png -> network-32.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/reset_orig.png -> reset_orig.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/icons/terminal-32.png -> terminal-32.png -> /usr/lib/uarm/icons
-/home/mello/microarm/qarm/ldscript/elf32ltsarm.h.uarmcore.x -> elf32ltsarm.h.uarmcore.x -> /usr/include/uarm/ldscripts
-/home/mello/microarm/qarm/ldscript/elf32ltsarm.h.uarmaout.x -> elf32ltsarm.h.uarmaout.x -> /usr/include/uarm/ldscripts
-/home/mello/microarm/qarm/elf2uarm* -> elf2uarm -> /usr/bin
-/home/mello/microarm/qarm/uarm* -> uarm -> /usr/bin
+/home/mello/uarm/uarm-mkdev* -> uarm-mkdev -> /usr/bin
+/home/mello/uarm/facilities/uARMtypes.h -> uARMtypes.h -> /usr/include/uarm
+/home/mello/uarm/facilities/uARMconst.h -> uARMconst.h -> /usr/include/uarm
+/home/mello/uarm/default/uarm -> uarm -> /etc/default
+/home/mello/uarm/test/helloWorld.c -> helloWorld.c -> /usr/share/doc/uarm/examples
+/home/mello/uarm/README.txt -> README.txt -> /usr/share/doc/uarm
+/home/mello/uarm/icons/poweron.png -> poweron.png -> /usr/lib/uarm/icons
+/home/mello/uarm/facilities/BIOS.s -> BIOS.s -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.o -> libuarm.o -> /usr/include/uarm
+/home/mello/uarm/facilities/crtso.o -> crtso.o -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.S -> libuarm.S -> /usr/include/uarm
+/home/mello/uarm/facilities/crtso.S -> crtso.S -> /usr/include/uarm
+/home/mello/uarm/facilities/arch.h -> arch.h -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.h -> libuarm.h -> /usr/include/uarm
+/home/mello/uarm/facilities/BIOS.rom.uarm -> BIOS.rom.uarm -> /usr/include/uarm
+/home/mello/uarm/icons/step_old.png -> step_old.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/disk-32.png -> disk-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/step.png -> step.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/play.png -> play.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/pause.png -> pause.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/window_default-48.png -> window_default-48.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/printer-32.png -> printer-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/config.png -> config.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/reset.png -> reset.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/stop.png -> stop.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/tape-32.png -> tape-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/network-32.png -> network-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/reset_orig.png -> reset_orig.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/terminal-32.png -> terminal-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/ldscript/elf32ltsarm.h.uarmcore.x -> elf32ltsarm.h.uarmcore.x -> /usr/include/uarm/ldscripts
+/home/mello/uarm/ldscript/elf32ltsarm.h.uarmaout.x -> elf32ltsarm.h.uarmaout.x -> /usr/include/uarm/ldscripts
+/home/mello/uarm/elf2uarm* -> elf2uarm -> /usr/bin
+/home/mello/uarm/uarm* -> uarm -> /usr/bin
 <</FILES>>
 <<SCRIPTS>>
 <<PREINST>>
@@ -65,6 +66,12 @@ Description: Simple ARM7TDMI virtual machine
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>DEFAULT<</DEST>>
+uarm (0.3.4) ; urgency=HIGH
+
+  * + mkdev program, ~fixed linker aout script
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Thu, 20 Nov 2014 17:46:31 +0100
+
 uarm (0.3.3) ; urgency=HIGH
 
   * ~ processor link return wrong value fix
@@ -142,5 +149,5 @@ Categories=Development;
 <<BUILD>>
 1
 1
-0
+1
 <</BUILD>>
