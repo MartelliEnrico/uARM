@@ -16,41 +16,40 @@ Description: Simple ARM7TDMI virtual machine
 <</CTRL>>
 <<FILES>>
 1
-/home/mello/uarm/facilities/libuarm.s -> libuarm.s -> /usr/include/uarm
-/home/mello/uarm/facilities/libdiv.s -> libdiv.s -> /usr/include/uarm
-/home/mello/uarm/facilities/libdiv.o -> libdiv.o -> /usr/include/uarm
-/home/mello/uarm/facilities/libdiv.o -> crtso.s -> /usr/include/uarm
-/home/mello/uarm/facilities/crti.s -> crti.s -> /usr/include/uarm
-/home/mello/uarm/facilities/crti.o -> crti.o -> /usr/include/uarm
-/home/mello/uarm/uarm-mkdev* -> uarm-mkdev -> /usr/bin
-/home/mello/uarm/facilities/uARMtypes.h -> uARMtypes.h -> /usr/include/uarm
-/home/mello/uarm/facilities/uARMconst.h -> uARMconst.h -> /usr/include/uarm
-/home/mello/uarm/default/uarm -> uarm -> /etc/default
 /home/mello/uarm/README.txt -> README.txt -> /usr/share/doc/uarm
-/home/mello/uarm/icons/poweron.png -> poweron.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/poweron.png -> BIOS.s -> /usr/include/uarm
-/home/mello/uarm/facilities/libuarm.o -> libuarm.o -> /usr/include/uarm
-/home/mello/uarm/facilities/crtso.o -> crtso.o -> /usr/include/uarm
-/home/mello/uarm/facilities/arch.h -> arch.h -> /usr/include/uarm
-/home/mello/uarm/facilities/libuarm.h -> libuarm.h -> /usr/include/uarm
-/home/mello/uarm/facilities/BIOS.rom.uarm -> BIOS.rom.uarm -> /usr/include/uarm
-/home/mello/uarm/icons/step_old.png -> step_old.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/disk-32.png -> disk-32.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/step.png -> step.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/play.png -> play.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/pause.png -> pause.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/window_default-48.png -> window_default-48.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/printer-32.png -> printer-32.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/config.png -> config.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/reset.png -> reset.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/stop.png -> stop.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/tape-32.png -> tape-32.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/network-32.png -> network-32.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/reset_orig.png -> reset_orig.png -> /usr/lib/uarm/icons
-/home/mello/uarm/icons/terminal-32.png -> terminal-32.png -> /usr/lib/uarm/icons
 /home/mello/uarm/ldscript/elf32ltsarm.h.uarmcore.x -> elf32ltsarm.h.uarmcore.x -> /usr/include/uarm/ldscripts
 /home/mello/uarm/ldscript/elf32ltsarm.h.uarmaout.x -> elf32ltsarm.h.uarmaout.x -> /usr/include/uarm/ldscripts
+/home/mello/uarm/icons/window_default-48.png -> window_default-48.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/terminal-32.png -> terminal-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/tape-32.png -> tape-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/stop.png -> stop.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/step.png -> step.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/reset.png -> reset.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/printer-32.png -> printer-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/poweron.png -> poweron.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/play.png -> play.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/pause.png -> pause.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/network-32.png -> network-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/disk-32.png -> disk-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/config.png -> config.png -> /usr/lib/uarm/icons
+/home/mello/uarm/default/uarm -> uarm -> /etc/default
+/home/mello/uarm/facilities/uARMtypes.h -> uARMtypes.h -> /usr/include/uarm
+/home/mello/uarm/facilities/uARMconst.h -> uARMconst.h -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.s -> libuarm.s -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.o -> libuarm.o -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.h -> libuarm.h -> /usr/include/uarm
+/home/mello/uarm/facilities/libdiv.s -> libdiv.s -> /usr/include/uarm
+/home/mello/uarm/facilities/libdiv.o -> libdiv.o -> /usr/include/uarm
+/home/mello/uarm/facilities/crtso.s -> crtso.s -> /usr/include/uarm
+/home/mello/uarm/facilities/crtso.o -> crtso.o -> /usr/include/uarm
+/home/mello/uarm/facilities/crti.s -> crti.s -> /usr/include/uarm
+/home/mello/uarm/facilities/crti.o -> crti.o -> /usr/include/uarm
+/home/mello/uarm/facilities/bios_const.h -> bios_const.h -> /usr/include/uarm
+/home/mello/uarm/facilities/BIOS.s -> BIOS.s -> /usr/include/uarm
+/home/mello/uarm/facilities/BIOS.rom.uarm -> BIOS.rom.uarm -> /usr/include/uarm
+/home/mello/uarm/facilities/arch.h -> arch.h -> /usr/include/uarm
 /home/mello/uarm/elf2uarm* -> elf2uarm -> /usr/bin
+/home/mello/uarm/uarm-mkdev* -> uarm-mkdev -> /usr/bin
 /home/mello/uarm/uarm* -> uarm -> /usr/bin
 <</FILES>>
 <<SCRIPTS>>
@@ -171,5 +170,5 @@ Categories=Development;
 <<BUILD>>
 1
 1
-1
+0
 <</BUILD>>
