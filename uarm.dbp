@@ -1,7 +1,7 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
 Package: uarm
-Version: 0.4.2
+Version: 0.4.3
 Section: devel
 Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Homepage: http://mellotanica.com/uarm
@@ -68,6 +68,13 @@ Description: Simple ARM7TDMI virtual machine
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>DEFAULT<</DEST>>
+uarm (0.4.3) ; urgency=HIGH
+
+  * ~ fixed tlb window refresh and dma tranfer errors
+    + pause on TLB change functionality
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Mon, 01 Dec 2014 12:12:44 +0100
+
 uarm (0.4.2) ; urgency=HIGH
 
   * ~ major fixes in bios and tlb management
