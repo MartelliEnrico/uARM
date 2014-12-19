@@ -1,10 +1,11 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
 Package: uarm
-Version: 0.4.3
-Section: devel
+Version: 0.4.4
+Source: https://github.com/mellotanica/uARM
 Maintainer: Marco Melletti <melletti.marco@gmail.com>
-Homepage: http://mellotanica.com/uarm
+Section: devel
+Homepage: http://mellotanica.github.io/uARM
 Priority: optional
 Architecture: i386
 Depends: libqtgui4 (>=4:4.8.1) | libqtgui4 (>=4:4.8.1-0ubuntu4) | libqtgui4 (>=4:4.8.1+dfsg-1)
