@@ -2,9 +2,8 @@
 <<CTRL>>
 Package: uarm
 Version: 0.4.4
-Source: https://github.com/mellotanica/uARM
-Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Section: devel
+Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Homepage: http://mellotanica.github.io/uARM
 Priority: optional
 Architecture: i386
