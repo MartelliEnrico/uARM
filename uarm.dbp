@@ -1,7 +1,7 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
 Package: uarm
-Version: 0.4.4
+Version: 0.4.5
 Section: devel
 Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Homepage: http://mellotanica.github.io/uARM
@@ -16,6 +16,7 @@ Description: Simple ARM7TDMI virtual machine
 <</CTRL>>
 <<FILES>>
 1
+/home/mello/uarm/test/helloworld.c -> helloworld.c -> /usr/share/doc/uarm/examples
 /home/mello/uarm/README.txt -> README.txt -> /usr/share/doc/uarm
 /home/mello/uarm/ldscript/elf32ltsarm.h.uarmcore.x -> elf32ltsarm.h.uarmcore.x -> /usr/include/uarm/ldscripts
 /home/mello/uarm/ldscript/elf32ltsarm.h.uarmaout.x -> elf32ltsarm.h.uarmaout.x -> /usr/include/uarm/ldscripts
@@ -68,6 +69,12 @@ Description: Simple ARM7TDMI virtual machine
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>DEFAULT<</DEST>>
+uarm (0.4.5) ; urgency=HIGH
+
+  * ~ fixed sew settings bugs, restored hello world in examples
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Mon, 29 Dec 2014 15:47:05 +0100
+
 uarm (0.4.3) ; urgency=HIGH
 
   * ~ fixed tlb window refresh and dma tranfer errors

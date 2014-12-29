@@ -1,0 +1,98 @@
+[DEBREATE-0.7.10]
+<<CTRL>>
+Package: uarm
+Version: 0.4.5
+Section: devel
+Maintainer: Marco Melletti <melletti.marco@gmail.com>
+Homepage: http://mellotanica.github.io/uARM
+Priority: optional
+Architecture: amd64
+Depends: libqtgui4 (>=4:4.8.1) | libqtgui4 (>=4:4.8.1-0ubuntu4) | libqtgui4 (>=4:4.8.1+dfsg-1)
+Recommends: gcc-arm-none-eabi
+Description: Simple ARM7TDMI virtual machine
+ uARM is a simple ARM7TDMI-based machine emulator with full ARM and Thum instruction sets, variable size little-endian RAM and 5 device classes with 8 devices each.
+ Full virtual memory support will be added in future versions.
+
+<</CTRL>>
+<<FILES>>
+1
+/home/mello/home/repos/uarm/uARM/test/helloworld.c -> helloworld.c -> /usr/share/doc/uarm/examples
+/home/mello/home/repos/uarm/uARM/README.txt -> README.txt -> /usr/share/doc/uarm
+/home/mello/home/repos/uarm/uARM/ldscript/elf32ltsarm.h.uarmcore.x -> elf32ltsarm.h.uarmcore.x -> /usr/include/uarm/ldscripts
+/home/mello/home/repos/uarm/uARM/ldscript/elf32ltsarm.h.uarmaout.x -> elf32ltsarm.h.uarmaout.x -> /usr/include/uarm/ldscripts
+/home/mello/home/repos/uarm/uARM/icons/window_default-48.png -> window_default-48.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/terminal-32.png -> terminal-32.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/tape-32.png -> tape-32.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/stop.png -> stop.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/step.png -> step.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/reset.png -> reset.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/printer-32.png -> printer-32.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/poweron.png -> poweron.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/play.png -> play.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/pause.png -> pause.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/network-32.png -> network-32.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/disk-32.png -> disk-32.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/icons/config.png -> config.png -> /usr/lib/uarm/icons
+/home/mello/home/repos/uarm/uARM/default/uarm -> uarm -> /etc/default
+/home/mello/home/repos/uarm/uARM/facilities/uARMtypes.h -> uARMtypes.h -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/uARMconst.h -> uARMconst.h -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/libuarm.s -> libuarm.s -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/libuarm.o -> libuarm.o -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/libuarm.h -> libuarm.h -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/libdiv.s -> libdiv.s -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/libdiv.o -> libdiv.o -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/crtso.s -> crtso.s -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/crtso.o -> crtso.o -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/crti.s -> crti.s -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/crti.o -> crti.o -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/bios_const.h -> bios_const.h -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/BIOS.s -> BIOS.s -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/BIOS.rom.uarm -> BIOS.rom.uarm -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/facilities/arch.h -> arch.h -> /usr/include/uarm
+/home/mello/home/repos/uarm/uARM/elf2uarm* -> elf2uarm -> /usr/bin
+/home/mello/home/repos/uarm/uARM/uarm-mkdev* -> uarm-mkdev -> /usr/bin
+/home/mello/home/repos/uarm/uARM/uarm* -> uarm -> /usr/bin
+<</FILES>>
+<<SCRIPTS>>
+<<PREINST>>
+0
+<</PREINST>>
+<<POSTINST>>
+0
+<</POSTINST>>
+<<PRERM>>
+0
+<</PRERM>>
+<<POSTRM>>
+0
+<</POSTRM>>
+<</SCRIPTS>>
+<<CHANGELOG>>
+<<DEST>>DEFAULT<</DEST>>
+uarm (0.4.5) ; urgency=HIGH
+
+  * ~ fixed sew settings bugs, restored hello world in examples
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Mon, 29 Dec 2014 15:47:05 +0100
+<</CHANGELOG>>
+<<COPYRIGHT>>
+
+<</COPYRIGHT>>
+<<MENU>>
+1
+Name=uARM
+Version=1.0
+Exec=uarm
+Comment=simple ARM virtual machine
+Icon=/usr/lib/uarm/icons/window_default-48.png
+Type=Application
+Terminal=false
+StartupNotify=true
+Encoding=UTF-8
+Categories=Development;
+<</MENU>>
+<<BUILD>>
+1
+1
+0
+<</BUILD>>
