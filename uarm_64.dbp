@@ -6,7 +6,7 @@ Section: devel
 Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Homepage: http://mellotanica.github.io/uARM
 Priority: optional
-Architecture: amd64
+Architecture: i386
 Depends: libqtgui4 (>=4:4.8.1) | libqtgui4 (>=4:4.8.1-0ubuntu4) | libqtgui4 (>=4:4.8.1+dfsg-1)
 Recommends: gcc-arm-none-eabi
 Description: Simple ARM7TDMI virtual machine
@@ -16,42 +16,42 @@ Description: Simple ARM7TDMI virtual machine
 <</CTRL>>
 <<FILES>>
 1
-/home/mello/home/repos/uarm/uARM/test/helloworld.c -> helloworld.c -> /usr/share/doc/uarm/examples
-/home/mello/home/repos/uarm/uARM/README.txt -> README.txt -> /usr/share/doc/uarm
-/home/mello/home/repos/uarm/uARM/ldscript/elf32ltsarm.h.uarmcore.x -> elf32ltsarm.h.uarmcore.x -> /usr/include/uarm/ldscripts
-/home/mello/home/repos/uarm/uARM/ldscript/elf32ltsarm.h.uarmaout.x -> elf32ltsarm.h.uarmaout.x -> /usr/include/uarm/ldscripts
-/home/mello/home/repos/uarm/uARM/icons/window_default-48.png -> window_default-48.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/terminal-32.png -> terminal-32.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/tape-32.png -> tape-32.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/stop.png -> stop.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/step.png -> step.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/reset.png -> reset.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/printer-32.png -> printer-32.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/poweron.png -> poweron.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/play.png -> play.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/pause.png -> pause.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/network-32.png -> network-32.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/disk-32.png -> disk-32.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/icons/config.png -> config.png -> /usr/lib/uarm/icons
-/home/mello/home/repos/uarm/uARM/default/uarm -> uarm -> /etc/default
-/home/mello/home/repos/uarm/uARM/facilities/uARMtypes.h -> uARMtypes.h -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/uARMconst.h -> uARMconst.h -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/libuarm.s -> libuarm.s -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/libuarm.o -> libuarm.o -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/libuarm.h -> libuarm.h -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/libdiv.s -> libdiv.s -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/libdiv.o -> libdiv.o -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/crtso.s -> crtso.s -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/crtso.o -> crtso.o -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/crti.s -> crti.s -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/crti.o -> crti.o -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/bios_const.h -> bios_const.h -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/BIOS.s -> BIOS.s -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/BIOS.rom.uarm -> BIOS.rom.uarm -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/facilities/arch.h -> arch.h -> /usr/include/uarm
-/home/mello/home/repos/uarm/uARM/elf2uarm* -> elf2uarm -> /usr/bin
-/home/mello/home/repos/uarm/uARM/uarm-mkdev* -> uarm-mkdev -> /usr/bin
-/home/mello/home/repos/uarm/uARM/uarm* -> uarm -> /usr/bin
+/home/mello/uarm/test/helloworld.c -> helloworld.c -> /usr/share/doc/uarm/examples
+/home/mello/uarm/README.txt -> README.txt -> /usr/share/doc/uarm
+/home/mello/uarm/ldscript/elf32ltsarm.h.uarmcore.x -> elf32ltsarm.h.uarmcore.x -> /usr/include/uarm/ldscripts
+/home/mello/uarm/ldscript/elf32ltsarm.h.uarmaout.x -> elf32ltsarm.h.uarmaout.x -> /usr/include/uarm/ldscripts
+/home/mello/uarm/icons/window_default-48.png -> window_default-48.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/terminal-32.png -> terminal-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/tape-32.png -> tape-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/stop.png -> stop.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/step.png -> step.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/reset.png -> reset.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/printer-32.png -> printer-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/poweron.png -> poweron.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/play.png -> play.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/pause.png -> pause.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/network-32.png -> network-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/disk-32.png -> disk-32.png -> /usr/lib/uarm/icons
+/home/mello/uarm/icons/config.png -> config.png -> /usr/lib/uarm/icons
+/home/mello/uarm/default/uarm -> uarm -> /etc/default
+/home/mello/uarm/facilities/uARMtypes.h -> uARMtypes.h -> /usr/include/uarm
+/home/mello/uarm/facilities/uARMconst.h -> uARMconst.h -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.s -> libuarm.s -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.o -> libuarm.o -> /usr/include/uarm
+/home/mello/uarm/facilities/libuarm.h -> libuarm.h -> /usr/include/uarm
+/home/mello/uarm/facilities/libdiv.s -> libdiv.s -> /usr/include/uarm
+/home/mello/uarm/facilities/libdiv.o -> libdiv.o -> /usr/include/uarm
+/home/mello/uarm/facilities/crtso.s -> crtso.s -> /usr/include/uarm
+/home/mello/uarm/facilities/crtso.o -> crtso.o -> /usr/include/uarm
+/home/mello/uarm/facilities/crti.s -> crti.s -> /usr/include/uarm
+/home/mello/uarm/facilities/crti.o -> crti.o -> /usr/include/uarm
+/home/mello/uarm/facilities/bios_const.h -> bios_const.h -> /usr/include/uarm
+/home/mello/uarm/facilities/BIOS.s -> BIOS.s -> /usr/include/uarm
+/home/mello/uarm/facilities/BIOS.rom.uarm -> BIOS.rom.uarm -> /usr/include/uarm
+/home/mello/uarm/facilities/arch.h -> arch.h -> /usr/include/uarm
+/home/mello/uarm/elf2uarm* -> elf2uarm -> /usr/bin
+/home/mello/uarm/uarm-mkdev* -> uarm-mkdev -> /usr/bin
+/home/mello/uarm/uarm* -> uarm -> /usr/bin
 <</FILES>>
 <<SCRIPTS>>
 <<PREINST>>
@@ -74,6 +74,96 @@ uarm (0.4.5) ; urgency=HIGH
   * ~ fixed sew settings bugs, restored hello world in examples
 
  -- Marco Melletti <melletti.marco@gmail.com>  Mon, 29 Dec 2014 15:47:05 +0100
+
+uarm (0.4.3) ; urgency=HIGH
+
+  * ~ fixed tlb window refresh and dma tranfer errors
+    + pause on TLB change functionality
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Mon, 01 Dec 2014 12:12:44 +0100
+
+uarm (0.4.2) ; urgency=HIGH
+
+  * ~ major fixes in bios and tlb management
+    + added libdiv with software divisions implementation
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Sun, 30 Nov 2014 21:05:34 +0100
+
+uarm (0.4.1) ; urgency=low
+
+  * ~ tlb probe fix, added user mode program linker init file (crti.o)
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Thu, 27 Nov 2014 17:53:53 +0100
+
+uarm (0.4.0) ; urgency=HIGH
+
+  * + added tlb functionalities, updated bios and system library
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Wed, 26 Nov 2014 18:33:38 +0100
+
+uarm (0.3.4) ; urgency=HIGH
+
+  * + mkdev program, ~fixed linker aout script
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Thu, 20 Nov 2014 17:46:31 +0100
+
+uarm (0.3.3) ; urgency=HIGH
+
+  * ~ processor link return wrong value fix
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Wed, 24 Sep 2014 18:00:31 +0200
+
+uarm (0.3.2) ; urgency=low
+
+  * ~ constant headers fixes
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Tue, 15 Jul 2014 10:52:23 +0200
+
+uarm (0.3.1) ; urgency=HIGH
+
+  * ~ ASR instruction fix
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Wed, 28 May 2014 19:28:23 +0200
+
+uarm (0.3.0) ; urgency=low
+
+  * + full interrupt support
+    + breakpoint window
+    + public constants definitions
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Fri, 16 May 2014 16:47:53 +0200
+
+uarm (0.2.2) ; urgency=HIGH
+
+  * ~ BIOS fix
+    
+    ~ minor UI fixes
+    
+    ~ interrupt cause register is now only inside CP15.Cause
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Mon, 28 Apr 2014 16:50:05 +0200
+
+uarm (0.2.1) ; urgency=HIGH
+
+  * +! interrupt support
+    
+    + "pause on excepion" option in config window
+    
+    + new BIOS
+    
+    + WAIT and HALT library functions, minor ligrary additions
+    
+    ~ updated state_t structure
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Wed, 23 Apr 2014 17:56:28 +0200
+
+uarm (0.1.6) ; urgency=low
+
+  * + added arm disassembler to ram viewer
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Fri, 28 Mar 2014 17:38:25 +0100
+
+
 <</CHANGELOG>>
 <<COPYRIGHT>>
 
