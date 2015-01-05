@@ -1,12 +1,12 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
 Package: uarm
-Version: 0.4.5
+Version: 0.4.6
 Section: devel
 Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Homepage: http://mellotanica.github.io/uARM
 Priority: optional
-Architecture: i386
+Architecture: amd64
 Depends: libqtgui4 (>=4:4.8.1) | libqtgui4 (>=4:4.8.1-0ubuntu4) | libqtgui4 (>=4:4.8.1+dfsg-1)
 Recommends: gcc-arm-none-eabi
 Description: Simple ARM7TDMI virtual machine
@@ -69,6 +69,12 @@ Description: Simple ARM7TDMI virtual machine
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>DEFAULT<</DEST>>
+uarm (0.4.6) ; urgency=low
+
+  * ~ reimplemented dialog popups for better accessibility support
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Mon, 05 Jan 2015 15:19:35 +0100
+
 uarm (0.4.5) ; urgency=HIGH
 
   * ~ fixed sew settings bugs, restored hello world in examples
