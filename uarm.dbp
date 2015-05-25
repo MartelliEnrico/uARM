@@ -1,7 +1,7 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
 Package: uarm
-Version: 0.5.2
+Version: 0.5.3
 Section: devel
 Maintainer: Marco Melletti <melletti.marco@gmail.com>
 Homepage: http://mellotanica.github.io/uARM
@@ -69,6 +69,14 @@ Description: Simple ARM7TDMI virtual machine
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>DEFAULT<</DEST>>
+uarm (0.5.3) ; urgency=HIGH
+
+  * fixed glibc compatibility
+    
+    minor ui fixes
+
+ -- Marco Melletti <melletti.marco@gmail.com>  Mon, 25 May 2015 18:14:50 +0200
+
 uarm (0.5.2) ; urgency=HIGH
 
   * ~ major fixes, incremented accessibility
