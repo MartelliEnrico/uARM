@@ -61,7 +61,7 @@ private:
 systemBus::systemBus(machine *mac) :
     mac(mac)
 {
-    if(ram == NULL)
+    if (ram == NULL)
         ram = new ramMemory();
     cpus = new processor*[MachineConfig::MAX_CPUS];
 
@@ -74,9 +74,9 @@ systemBus::systemBus(machine *mac) :
     reset();
 }
 
-systemBus::~systemBus(){
+systemBus::~systemBus() {
     delete eventQ;
-    if(ram != NULL){
+    if (ram != NULL) {
         delete ram;
         ram = NULL;
     }
@@ -85,77 +85,77 @@ systemBus::~systemBus(){
     delete [] info;
     delete [] romFrame;
     delete [] intBitmap;
-    if(bios != NULL){
+    if (bios != NULL) {
         delete [] bios;
         bios = NULL;
     }
-    delete [] pipeline;
-    for(unsigned int i = 0; i < MachineConfig::MAX_CPUS; i++){
-        if(cpus[i] != NULL)
+    //delete [] pipeline;
+    for (unsigned int i = 0; i < MachineConfig::MAX_CPUS; i++) {
+        if (cpus[i] != NULL)
             delete cpus[i];
     }
     delete [] cpus;
 }
 
-void systemBus::reset(){
+void systemBus::reset() {
     pic.reset(new InterruptController(this));
 
-    if(bios != NULL)
+    if (bios != NULL)
         delete [] bios;
     bios = NULL;
     tod = UINT64_C(0);
     timer = MAXWORDVAL;
-    if(eventQ != NULL)
+    if (eventQ != NULL)
         delete eventQ;
     eventQ = new EventQueue();
 
-    if(excVector != NULL)
+    if (excVector != NULL)
         delete [] excVector;
     excVector = new Byte[EXCVTOP];
     memset(excVector, 0, EXCVTOP);
 
-    if(devRegs != NULL)
+    if (devRegs != NULL)
         delete [] devRegs;
     devRegs = new Byte[(DEVTOP - DEVBASEADDR)];
     memset(devRegs, 0, (DEVTOP - DEVBASEADDR));
 
-    if(info != NULL)
+    if (info != NULL)
         delete [] info;
     info = new Byte[(INFOTOP - INFOBASEADDR)];
     memset(info, 0, (INFOTOP - INFOBASEADDR));
 
-    if(romFrame != NULL)
+    if (romFrame != NULL)
         delete [] romFrame;
     romFrame = new Byte[(ROMFRAMETOP - ROMFRAMEBASE)];
     memset(romFrame, 0, (ROMFRAMETOP - ROMFRAMEBASE));
 
-    if(intBitmap != NULL)
+    if (intBitmap != NULL)
         delete [] intBitmap;
     intBitmap = new Byte[(CDEV_BITMAP_END - CDEV_BITMAP_BASE)];
     memset(intBitmap, 0, (CDEV_BITMAP_END - CDEV_BITMAP_BASE));
 
     ram->reset(MC_Holder::getInstance()->getConfig()->getRamSize());
-    if(activeCpus != MC_Holder::getInstance()->getConfig()->getNumProcessors()){
+    if (activeCpus != MC_Holder::getInstance()->getConfig()->getNumProcessors()) {
         //if there will be less cpus then what are active now destroy exceding instances
         //and reset the other ones
-        if(activeCpus > MC_Holder::getInstance()->getConfig()->getNumProcessors()){
-            for(unsigned int i = 0; i < activeCpus; i++){
-                if(i < MC_Holder::getInstance()->getConfig()->getNumProcessors())
+        if (activeCpus > MC_Holder::getInstance()->getConfig()->getNumProcessors()) {
+            for (unsigned int i = 0; i < activeCpus; i++) {
+                if (i < MC_Holder::getInstance()->getConfig()->getNumProcessors())
                     cpus[i]->reset();
                 else
                     delete cpus[i];
             }
-        //else reset existing cpus and create the new ones
+            //else reset existing cpus and create the new ones
         } else {
-            for(unsigned int i = 0; i < MC_Holder::getInstance()->getConfig()->getNumProcessors(); i++){
-                if(i < activeCpus)
+            for (unsigned int i = 0; i < MC_Holder::getInstance()->getConfig()->getNumProcessors(); i++) {
+                if (i < activeCpus)
                     cpus[i]->reset();
                 else
                     cpus[i] = new processor(this);
             }
         }
     } else {
-        for(unsigned int i = 0; i < activeCpus; i++)
+        for (unsigned int i = 0; i < activeCpus; i++)
             cpus[i]->reset();
     }
     // Create devices and initialize registers used for interrupt
@@ -164,7 +164,7 @@ void systemBus::reset(){
     for (unsigned intl = 0; intl < N_EXT_IL; intl++) {
         instDevTable[intl] = 0UL;
         for (unsigned int devNo = 0; devNo < N_DEV_PER_IL; devNo++) {
-            if(devTable[intl][devNo] != NULL)
+            if (devTable[intl][devNo] != NULL)
                 delete devTable[intl][devNo];
             devTable[intl][devNo] = makeDev(intl, devNo);
             if (devTable[intl][devNo]->Type() != NULLDEV)
@@ -174,7 +174,7 @@ void systemBus::reset(){
     initInfo();
 }
 
-void systemBus::initInfo(){
+void systemBus::initInfo() {
     Word addr = BUS_REG_RAM_BASE;
     writeW(&addr, RAMBASEADDR);
     addr = BUS_REG_RAM_SIZE;
@@ -194,7 +194,7 @@ void systemBus::initInfo(){
     writeW(&addr, 1);   //STATIC: timer scale now is fixed to 1 Mz
 }
 
-void systemBus::ClockTick(){
+void systemBus::ClockTick() {
     tod++;
 
     // both registers signal "change" because they are conceptually one
@@ -206,7 +206,7 @@ void systemBus::ClockTick(){
     writeW(&addr, (Word) (tod & 0xFFFFFFFF));           //TOD Low
 
     // Update interval timer
-    if (UnsSub(&timer, timer, 1)){
+    if (UnsSub(&timer, timer, 1)) {
         pic->StartIRQ(IL_TIMER);
     }
     HandleBusAccess(BUS_REG_TIMER, WRITE, NULL);
@@ -249,81 +249,81 @@ void systemBus::Skip(uint32_t cycles)
     writeW(&addr, timer);
 }
 
-bool systemBus::prefetch(Word addr, bool exec){ //fetches one instruction per execution from exact given address
+bool systemBus::prefetch(Word addr, bool exec) { //fetches one instruction per execution from exact given address
     //STATIC: should check if accessing VM not bus
-    if(exec){ //only check for breakpoints if loading exec stage
+    if (exec) { //only check for breakpoints if loading exec stage
         HandleBusAccess(addr, EXEC, NULL);
     }
     pipeline[PIPELINE_EXECUTE] = pipeline[PIPELINE_DECODE];
     pipeline[PIPELINE_DECODE] = pipeline[PIPELINE_FETCH];
-    if(readW(&addr, &pipeline[PIPELINE_FETCH]) != ABT_NOABT)
+    if (readW(&addr, &pipeline[PIPELINE_FETCH]) != ABT_NOABT)
         return false;
     return true;
 }
 
-bool systemBus::fetch(Word pc, bool armMode){
+bool systemBus::fetch(Word pc, bool armMode) {
     //STATIC: should check if accessing VM not bus
     Word addr = pc - (armMode ? 8 : 4);
     HandleBusAccess(addr, EXEC, NULL);
-    if(readW(&addr, &pipeline[PIPELINE_EXECUTE]) != ABT_NOABT)
+    if (readW(&addr, &pipeline[PIPELINE_EXECUTE]) != ABT_NOABT)
         return false;
     addr += 4;
-    if(!armMode){
-        if(readW(&addr, &pipeline[PIPELINE_DECODE]) != ABT_NOABT)
+    if (!armMode) {
+        if (readW(&addr, &pipeline[PIPELINE_DECODE]) != ABT_NOABT)
             return false;
         pipeline[PIPELINE_FETCH] = 0;
         return true;
     }
-    if(readW(&addr, &pipeline[PIPELINE_DECODE]) != ABT_NOABT)
+    if (readW(&addr, &pipeline[PIPELINE_DECODE]) != ABT_NOABT)
         return false;
     addr += 4;
-    if(readW(&addr, &pipeline[PIPELINE_FETCH]) != ABT_NOABT)
+    if (readW(&addr, &pipeline[PIPELINE_FETCH]) != ABT_NOABT)
         return false;
     return true;
 }
 
 
-Word systemBus::get_unpredictable(){
+Word systemBus::get_unpredictable() {
     Word ret;
-    for(unsigned i = 0; i < sizeof(Word) * 8; i++)
+    for (unsigned i = 0; i < sizeof(Word) * 8; i++)
         ret |= (rand() % 1 ? 1 : 0) << i;
     return ret;
 }
 
-bool systemBus::get_unpredictableB(){
+bool systemBus::get_unpredictableB() {
     return rand() % 1;
 }
 
-bool systemBus::loadBIOS(char *buffer, Word size){
+bool systemBus::loadBIOS(char *buffer, Word size) {
     BIOSTOP = size + BIOSBASEADDR;
-    if(bios != NULL)
+    if (bios != NULL)
         delete [] bios;
     bios = new Byte[size];
     Word address = BIOSBASEADDR;
-    for(Word i = 0; i < size; i++, address++){
+    for (Word i = 0; i < size; i++, address++) {
         writeB(&address, (Byte) buffer[i]);
     }
     return true;
 }
 
-bool systemBus::loadRAM(char *buffer, Word size, bool kernel){
-    if(kernel){
-        Word address = ((Byte) buffer[(AOUT_HE_TEXT_VADDR*WS)])| ((Byte) buffer[(AOUT_HE_TEXT_VADDR*WS)+1]) << 8 | ((Byte) buffer[(AOUT_HE_TEXT_VADDR*WS)+2]) << 16 | ((Byte) buffer[(AOUT_HE_TEXT_VADDR*WS)+3]) << 24;
+bool systemBus::loadRAM(char *buffer, Word size, bool kernel) {
+    if (kernel) {
+        Word address = ((Byte) buffer[(AOUT_HE_TEXT_VADDR * WS)]) | ((Byte) buffer[(AOUT_HE_TEXT_VADDR * WS) + 1]) << 8 | ((Byte) buffer[(AOUT_HE_TEXT_VADDR * WS) + 2]) << 16 | ((Byte) buffer[(AOUT_HE_TEXT_VADDR * WS) + 3]) << 24;
         Word dataVAddr = 0, textSize = 0;
         bool textSet = false;
         //copy provided data only for legit ram addresses
-        for(Word i = 0; i < size; i++, address++){
-            if(address >= RAMBASEADDR){
-                if(textSet && i >= textSize){
+        for (Word i = 0; i < size; i++, address++) {
+            if (address >= RAMBASEADDR) {
+                if (textSet && i >= textSize) {
                     address = dataVAddr;
                     textSet = false;
                 }
-                if(i/4 == (AOUT_HE_DATA_VADDR+1) && i%4 == 0){
-                    Word taddr = address-4;
+                if (i / 4 == (AOUT_HE_DATA_VADDR + 1) && i % 4 == 0) {
+                    Word taddr = address - 4;
                     readW(&taddr, &dataVAddr);
                 }
-                if(!textSet && (i/4 == (AOUT_HE_TEXT_FILESZ+1) && i%4 == 0)){
-                    Word taddr = address-4;
+                if (!textSet && (i / 4 == (AOUT_HE_TEXT_FILESZ + 1) && i % 4 == 0)) {
+                    Word taddr = address - 4;
                     readW(&taddr, &textSize);
                     textSet = true;
                 }
@@ -331,141 +331,141 @@ bool systemBus::loadRAM(char *buffer, Word size, bool kernel){
             }
         }
         //now make sure core header is at its place at the beginning of ram
-        for(Word i = 0, address = RAMBASEADDR; i < WS*N_AOUT_HDR_ENT; i++, address++){
+        for (Word i = 0, address = RAMBASEADDR; i < WS * N_AOUT_HDR_ENT; i++, address++) {
             writeB(&address, (Byte)buffer[i]);
         }
         return true;
     }
-    else{   //user program, to be placed somewhere else.. should be loaded via os
+    else {  //user program, to be placed somewhere else.. should be loaded via os
         return false;
     }
 }
 
-AbortType systemBus::writeB(Word *address, Byte data){
+AbortType systemBus::writeB(Word *address, Byte data) {
     return writeB(address, data, false);
 }
 
-AbortType systemBus::writeH(Word *address, HalfWord data){
+AbortType systemBus::writeH(Word *address, HalfWord data) {
     return writeH(address, data, false);
 }
 
-AbortType systemBus::writeW(Word *address, Word data){
+AbortType systemBus::writeW(Word *address, Word data) {
     return writeW(address, data, false);
 }
 
-AbortType systemBus::readB(Word *addr, Byte *dest){
+AbortType systemBus::readB(Word *addr, Byte *dest) {
     Word address = *addr;
     AbortType cause = checkAddress(&address);
     HandleBusAccess(address, READ, NULL);
-    if(cause != ABT_NOABT && cause != NOABT_ROM)
+    if (cause != ABT_NOABT && cause != NOABT_ROM)
         return cause;
-    if(cause == ABT_NOABT){
-        if(!ram->read(&address, dest))
+    if (cause == ABT_NOABT) {
+        if (!ram->read(&address, dest))
             return ABT_MEMERR;
     } else {    //trying to access Bus area
-        if(!readRomB(&address, dest))
+        if (!readRomB(&address, dest))
             return ABT_BUSERR;
     }
     return ABT_NOABT;
 }
 
-AbortType systemBus::writeB(Word *addr, Byte data, bool fromProc){
+AbortType systemBus::writeB(Word *addr, Byte data, bool fromProc) {
     Word address = *addr;
     AbortType cause = checkAddress(&address);
     HandleBusAccess(address, WRITE, NULL);
-    if(fromProc && address >= BUS_REG_TIMER && address < BUS_REG_TIMER+4){
+    if (fromProc && address >= BUS_REG_TIMER && address < BUS_REG_TIMER + 4) {
         pic->EndIRQ(IL_TIMER, 0);   //STATIC: if multiprocessor is implemented this must search for the right cpu
     }
-    if(cause != ABT_NOABT && cause != NOABT_ROM)
+    if (cause != ABT_NOABT && cause != NOABT_ROM)
         return cause;
-    if(cause == ABT_NOABT){
-        if(!ram->write(&address, data))
+    if (cause == ABT_NOABT) {
+        if (!ram->write(&address, data))
             return ABT_MEMERR;
     } else {    //trying to access Bus area
-        if(!writeRomB(&address, data))
+        if (!writeRomB(&address, data))
             return ABT_BUSERR;
     }
     return ABT_NOABT;
 }
 
-AbortType systemBus::readH(Word *addr, HalfWord *dest){
+AbortType systemBus::readH(Word *addr, HalfWord *dest) {
     Word address = *addr;
     AbortType cause = checkAddress(&address);
     HandleBusAccess(address, READ, NULL);
-    if(cause != ABT_NOABT && cause != NOABT_ROM)
+    if (cause != ABT_NOABT && cause != NOABT_ROM)
         return cause;
-    if(cause == ABT_NOABT){
-        if(!ram->readH(&address, dest))
+    if (cause == ABT_NOABT) {
+        if (!ram->readH(&address, dest))
             return ABT_MEMERR;
     } else {    //trying to access Bus area
-        if(!readRomH(&address, dest))
+        if (!readRomH(&address, dest))
             return ABT_BUSERR;
     }
     return ABT_NOABT;
 }
 
-AbortType systemBus::writeH(Word *addr, HalfWord data, bool fromProc){
+AbortType systemBus::writeH(Word *addr, HalfWord data, bool fromProc) {
     Word address = *addr;
     AbortType cause = checkAddress(&address);
     HandleBusAccess(address, WRITE, NULL);
-    if(fromProc && address >= BUS_REG_TIMER && address < BUS_REG_TIMER+4){
+    if (fromProc && address >= BUS_REG_TIMER && address < BUS_REG_TIMER + 4) {
         pic->EndIRQ(IL_TIMER, 0);   //STATIC: if multiprocessor is implemented this must search for the right cpu
     }
-    if(cause != ABT_NOABT && cause != NOABT_ROM)
+    if (cause != ABT_NOABT && cause != NOABT_ROM)
         return cause;
-    if(cause == ABT_NOABT){
-        if(!ram->writeH(&address, data))
+    if (cause == ABT_NOABT) {
+        if (!ram->writeH(&address, data))
             return ABT_MEMERR;
     } else {    //trying to access Bus area
-        if(!writeRomH(&address, data))
+        if (!writeRomH(&address, data))
             return ABT_BUSERR;
     }
     return ABT_NOABT;
 }
 
-AbortType systemBus::readW(Word *addr, Word *dest){
+AbortType systemBus::readW(Word *addr, Word *dest) {
     Word address = *addr;
     AbortType cause = checkAddress(&address);
     HandleBusAccess(address, READ, NULL);
-    if(cause != ABT_NOABT && cause != NOABT_ROM)
+    if (cause != ABT_NOABT && cause != NOABT_ROM)
         return cause;
-    if(cause == ABT_NOABT){
-        if(!ram->readW(&address, dest))
+    if (cause == ABT_NOABT) {
+        if (!ram->readW(&address, dest))
             return ABT_MEMERR;
     } else {    //trying to access Bus area
-        if(!readRomW(&address, dest))
+        if (!readRomW(&address, dest))
             return ABT_BUSERR;
     }
     return ABT_NOABT;
 }
 
-AbortType systemBus::writeW(Word *addr, Word data, bool fromProc){
+AbortType systemBus::writeW(Word *addr, Word data, bool fromProc) {
     Word address = *addr;
     AbortType cause = checkAddress(&address);
     HandleBusAccess(address, WRITE, NULL);
-    if(fromProc && address >= BUS_REG_TIMER && address < BUS_REG_TIMER+4){
+    if (fromProc && address >= BUS_REG_TIMER && address < BUS_REG_TIMER + 4) {
         pic->EndIRQ(IL_TIMER, 0);   //STATIC: if multiprocessor is implemented this must search for the right cpu
     }
-    if(cause != ABT_NOABT && cause != NOABT_ROM)
+    if (cause != ABT_NOABT && cause != NOABT_ROM)
         return cause;
-    if(cause == ABT_NOABT){
-        if(!ram->writeW(&address, data))
+    if (cause == ABT_NOABT) {
+        if (!ram->writeW(&address, data))
             return ABT_MEMERR;
     } else {    //trying to access Bus area
-        if(!writeRomW(&address, data))
+        if (!writeRomW(&address, data))
             return ABT_BUSERR;
     }
     return ABT_NOABT;
 }
 
-AbortType systemBus::checkAddress(Word *address){
+AbortType systemBus::checkAddress(Word *address) {
     //check for address health based on virtual memory state AND cp15 result
 
     //modify address if needed
 
-    if(*address >= (ram->getRamSize() + RAMBASEADDR))
+    if (*address >= (ram->getRamSize() + RAMBASEADDR))
         return ABT_BUSERR;
-    if(*address >= RAMBASEADDR){   //if address points to physical ram, rewrite it to get the right data
+    if (*address >= RAMBASEADDR) { //if address points to physical ram, rewrite it to get the right data
         *address -= RAMBASEADDR;
         return ABT_NOABT;
     }
@@ -473,25 +473,25 @@ AbortType systemBus::checkAddress(Word *address){
         return NOABT_ROM;
 }
 
-bool systemBus::readRomB(Word *address, Byte *dest){
+bool systemBus::readRomB(Word *address, Byte *dest) {
     Byte *romptr;
     Word addr = *address - (*address % 4);
-    if(addr < DEVTOP && addr >= DEVBASEADDR){   //read device register
+    if (addr < DEVTOP && addr >= DEVBASEADDR) { //read device register
         DeviceAreaAddress da(addr);
         Device* device = devTable[da.line()][da.device()];
-        *dest = (Byte) ((device->ReadDevReg(da.field())) >> ((*address % 4) * 8)) & 0xFF;   
+        *dest = (Byte) ((device->ReadDevReg(da.field())) >> ((*address % 4) * 8)) & 0xFF;
     } else {
-        if(!getRomVector(address, &romptr))
+        if (!getRomVector(address, &romptr))
             return false;
         *dest = *romptr;
     }
     return true;
 }
 
-bool systemBus::writeRomB(Word *address, Byte data){
+bool systemBus::writeRomB(Word *address, Byte data) {
     Byte *romptr;
     Word addr = *address - (*address % 4);
-    if(addr < DEVTOP && addr >= DEVBASEADDR){   //write device register
+    if (addr < DEVTOP && addr >= DEVBASEADDR) { //write device register
         DeviceAreaAddress dva(addr);
         Device *device = devTable[dva.line()][dva.device()];
         //addr is now used to edit only the register's byte addressed
@@ -500,33 +500,33 @@ bool systemBus::writeRomB(Word *address, Byte data){
         addr |= (data << (*address % 4));
         device->WriteDevReg(dva.field(), addr);
     } else {
-        if(!getRomVector(address, &romptr))
+        if (!getRomVector(address, &romptr))
             return false;
         *romptr = data;
     }
     return true;
 }
 
-bool systemBus::readRomH(Word *address, HalfWord *dest){
+bool systemBus::readRomH(Word *address, HalfWord *dest) {
     Byte *romptr;
     Word addr = *address - (*address % 4);
     *dest = 0;
-    if(addr < DEVTOP && addr >= DEVBASEADDR){   //read device register
+    if (addr < DEVTOP && addr >= DEVBASEADDR) { //read device register
         DeviceAreaAddress da(addr);
         Device* device = devTable[da.line()][da.device()];
         *dest = (HalfWord) ((device->ReadDevReg(da.field())) >> (((*address >> 1) % 2) * 16)) & 0xFFFF;
-    } else for(uint i = 0; i < sizeof(HalfWord); i++, addr++){
-        if(!getRomVector(&addr, &romptr))
-            return false;
-        *dest |= (*romptr << (i * 8));
-    }
+    } else for (uint i = 0; i < sizeof(HalfWord); i++, addr++) {
+            if (!getRomVector(&addr, &romptr))
+                return false;
+            *dest |= (*romptr << (i * 8));
+        }
     return true;
 }
 
-bool systemBus::writeRomH(Word *address, HalfWord data){
+bool systemBus::writeRomH(Word *address, HalfWord data) {
     Byte *romptr;
     Word addr = *address - (*address % 4);
-    if(addr < DEVTOP && addr >= DEVBASEADDR){   //write device register
+    if (addr < DEVTOP && addr >= DEVBASEADDR) { //write device register
         DeviceAreaAddress dva(addr);
         Device *device = devTable[dva.line()][dva.device()];
         //addr is now used to edit only the register's halfword addressed
@@ -534,91 +534,91 @@ bool systemBus::writeRomH(Word *address, HalfWord data){
         addr ^= (0xFFFF << ((*address >> 1) % 2));
         addr |= (data << ((*address >> 1) % 2));
         device->WriteDevReg(dva.field(), addr);
-    } else for(uint i = 0; i < sizeof(HalfWord); i++, addr++){
-        if(!getRomVector(&addr, &romptr))
-            return false;
-        *romptr = (Byte) ((data >> (i * 8)) & 0xFF);
-    }
+    } else for (uint i = 0; i < sizeof(HalfWord); i++, addr++) {
+            if (!getRomVector(&addr, &romptr))
+                return false;
+            *romptr = (Byte) ((data >> (i * 8)) & 0xFF);
+        }
     return true;
 }
 
-bool systemBus::readRomW(Word *address, Word *dest){
+bool systemBus::readRomW(Word *address, Word *dest) {
     Byte *romptr;
     Word addr = *address;
     *dest = 0;
-    if(addr < DEVTOP && addr >= DEVBASEADDR){   //read device register
+    if (addr < DEVTOP && addr >= DEVBASEADDR) { //read device register
         DeviceAreaAddress da(addr);
         Device* device = devTable[da.line()][da.device()];
         *dest = device->ReadDevReg(da.field());
-    } else for(uint i = 0; i < sizeof(Word); i++, addr++){
-        if(!getRomVector(&addr, &romptr))
-            return false;
-        *dest |= (*romptr << (i * 8));
-    }
+    } else for (uint i = 0; i < sizeof(Word); i++, addr++) {
+            if (!getRomVector(&addr, &romptr))
+                return false;
+            *dest |= (*romptr << (i * 8));
+        }
     return true;
 }
 
-bool systemBus::writeRomW(Word *address, Word data){
+bool systemBus::writeRomW(Word *address, Word data) {
     Byte *romptr;
     Word addr = *address;
-    if(addr < DEVTOP && addr >= DEVBASEADDR){   //write device register
+    if (addr < DEVTOP && addr >= DEVBASEADDR) { //write device register
         DeviceAreaAddress dva(addr);
         Device *device = devTable[dva.line()][dva.device()];
         device->WriteDevReg(dva.field(), data);
-    } else for(uint i = 0; i < sizeof(Word); i++, addr++){
-        if(!getRomVector(&addr, &romptr))
-            return false;
-        Byte dataB = (Byte) ((data >> (i * 8)) & 0xFF);
-        *romptr = dataB;
-    }
+    } else for (uint i = 0; i < sizeof(Word); i++, addr++) {
+            if (!getRomVector(&addr, &romptr))
+                return false;
+            Byte dataB = (Byte) ((data >> (i * 8)) & 0xFF);
+            *romptr = dataB;
+        }
     return true;
 }
 
-bool systemBus::getRomVector(Word *address, Byte **romptr){
+bool systemBus::getRomVector(Word *address, Byte **romptr) {
     //this will let anyone read and write rom memory, we need to check who is trying to access..
 
     Word offset = *address + (ENDIANESS_BIGENDIAN ? (3 - 2 * (*address % 4)) : 0);
-    if(*address < EXCVTOP)
+    if (*address < EXCVTOP)
         *romptr = excVector + offset;
-    else if(*address < DEVTOP && *address >= DEVBASEADDR)
+    else if (*address < DEVTOP && *address >= DEVBASEADDR)
         *romptr = devRegs + (offset - DEVBASEADDR);
-    else if(*address < BIOSTOP && *address >= BIOSBASEADDR){
-        if(bios != NULL)
+    else if (*address < BIOSTOP && *address >= BIOSBASEADDR) {
+        if (bios != NULL)
             *romptr = bios + (offset - BIOSBASEADDR);
         else
             return false;
     }
-    else if(*address < INFOTOP && *address >= INFOBASEADDR){
-        if(*address < BUS_REG_TIMER+4 && *address >= BUS_REG_TIMER)
+    else if (*address < INFOTOP && *address >= INFOBASEADDR) {
+        if (*address < BUS_REG_TIMER + 4 && *address >= BUS_REG_TIMER)
             *romptr = (Byte *) &timer + offset - BUS_REG_TIMER;
-        else if(*address < BUS_REG_TOD_HI+4 && *address >= BUS_REG_TOD_HI)
+        else if (*address < BUS_REG_TOD_HI + 4 && *address >= BUS_REG_TOD_HI)
             *romptr = (Byte *) &tod + 4 + offset - BUS_REG_TOD_HI;
-        else if(*address < BUS_REG_TOD_LO+4 && *address >= BUS_REG_TOD_LO)
+        else if (*address < BUS_REG_TOD_LO + 4 && *address >= BUS_REG_TOD_LO)
             *romptr = (Byte *) &tod + offset - BUS_REG_TOD_LO;
         else
             *romptr = info + (offset - INFOBASEADDR);
     }
-    else if(*address < ROMFRAMETOP && *address >= ROMFRAMEBASE)
+    else if (*address < ROMFRAMETOP && *address >= ROMFRAMEBASE)
         *romptr = romFrame + (offset - ROMFRAMEBASE);
-    else if(*address < IDEV_BITMAP_END && *address >= IDEV_BITMAP_BASE)
+    else if (*address < IDEV_BITMAP_END && *address >= IDEV_BITMAP_BASE)
         *romptr = (Byte*) instDevTable + (offset - IDEV_BITMAP_BASE);
-    else if(*address < CDEV_BITMAP_END && *address >= CDEV_BITMAP_BASE)
+    else if (*address < CDEV_BITMAP_END && *address >= CDEV_BITMAP_BASE)
         *romptr = intBitmap + (offset - CDEV_BITMAP_BASE);
     else
         return false;
     return true;
 }
 
-void systemBus::IntReq(unsigned int intl, unsigned int devNum){
+void systemBus::IntReq(unsigned int intl, unsigned int devNum) {
     pic->StartIRQ(DEV_IL_START + intl, devNum);
 }
 
-void systemBus::IntAck(unsigned int intl, unsigned int devNum){
+void systemBus::IntAck(unsigned int intl, unsigned int devNum) {
     pic->EndIRQ(DEV_IL_START + intl, devNum);
 }
 
-bool systemBus::DMATransfer(Block * blk, Word startAddr, bool toMemory){
-    if (BADADDR(startAddr,sizeof(Word)))
+bool systemBus::DMATransfer(Block * blk, Word startAddr, bool toMemory) {
+    if (BADADDR(startAddr, sizeof(Word)))
         return true;
 
     AbortType error = ABT_NOABT;
@@ -640,11 +640,11 @@ bool systemBus::DMATransfer(Block * blk, Word startAddr, bool toMemory){
         }
     }
 
-    if(error == ABT_NOABT)
+    if (error == ABT_NOABT)
         return false;
     return true;
 }
-bool systemBus::DMAVarTransfer(Block * blk, Word startAddr, Word byteLength, bool toMemory){
+bool systemBus::DMAVarTransfer(Block * blk, Word startAddr, Word byteLength, bool toMemory) {
     // fit bytes into words
     Word length;
     if (byteLength % WORDLEN)
@@ -674,22 +674,22 @@ bool systemBus::DMAVarTransfer(Block * blk, Word startAddr, Word byteLength, boo
         }
     }
 
-    if(error == ABT_NOABT)
+    if (error == ABT_NOABT)
         return false;
     return true;
 }
 
-Word systemBus::getPendingInt(const processor* cpu){
+Word systemBus::getPendingInt(const processor* cpu) {
     return pic->GetIP(cpu->Id());
 }
 
-void systemBus::AssertIRQ(unsigned int il, unsigned int target){
-    if(cpus != NULL)
+void systemBus::AssertIRQ(unsigned int il, unsigned int target) {
+    if (cpus != NULL)
         getProcessor(target)->AssertIRQ(il);
 }
 
-void systemBus::DeassertIRQ(unsigned int il, unsigned int target){
-    if(cpus != NULL)
+void systemBus::DeassertIRQ(unsigned int il, unsigned int target) {
+    if (cpus != NULL)
         getProcessor(target)->DeassertIRQ(il);
 }
 
@@ -697,7 +697,7 @@ void systemBus::DeassertIRQ(unsigned int il, unsigned int target){
 Device * systemBus::getDev(unsigned int intL, unsigned int dNum)
 {
     if (intL < DEVINTUSED  && dNum < DEVPERINT)
-        return(devTable[intL][dNum]);
+        return (devTable[intL][dNum]);
     else {
         Panic("Unknown device specified in SystemBus::getDev()");
         // never returns
@@ -716,7 +716,7 @@ Device* systemBus::makeDev(unsigned int intl, unsigned int dnum)
 
     devt = config->getDeviceType(intl, dnum);
 
-    switch(devt) {
+    switch (devt) {
     case PRNTDEV:
         dev = new PrinterDevice(this, config, intl, dnum);
         break;
@@ -745,7 +745,7 @@ Device* systemBus::makeDev(unsigned int intl, unsigned int dnum)
     return dev;
 }
 
-uint64_t systemBus::scheduleEvent(uint64_t delay, Event::Callback callback){
+uint64_t systemBus::scheduleEvent(uint64_t delay, Event::Callback callback) {
     return eventQ->InsertQ(tod, delay, callback);
 }
 
@@ -764,15 +764,15 @@ void systemBus::setTimer(Word time)
     timer = time;
 }
 
-void systemBus::HandleBusAccess(Word pAddr, Word access, processor* cpu){
+void systemBus::HandleBusAccess(Word pAddr, Word access, processor* cpu) {
     mac->HandleBusAccess(pAddr, access, cpu);
 }
 
-void systemBus::HandleVMAccess(Word asid, Word vaddr, Word access, processor* cpu){
+void systemBus::HandleVMAccess(Word asid, Word vaddr, Word access, processor* cpu) {
     mac->HandleVMAccess(asid, vaddr, access, cpu);
 }
 
-void systemBus::SignalTLBChanged(unsigned int index){
+void systemBus::SignalTLBChanged(unsigned int index) {
     mac->updateTLB(index);
 }
 

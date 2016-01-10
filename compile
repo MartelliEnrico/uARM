@@ -1,26 +1,19 @@
 #!/bin/bash
 
-qtchooser >> /dev/null 2> /dev/null
-QMAKERET=`echo $?`
-
-if [ $QMAKERET -ne 127 ]; then
-  VERSION=0
-  for v in `qtchooser -l`; do
-    if [[ $v == 5* ]]; then
-	VERSION=`echo $v`
-	break
-    fi
-  done
-  if [ "$VERSION" == 0 ]; then
-    echo "!!!!!!!! it seems you don't have qt5 installed, aborting compilation !!!!!!!!"
+if [[ `brew help >/dev/null 2>&1` != 0 ]]; then
+    echo "You need to install homebrew!"
+    echo "Go to http://brew.sh and follow the instructions"
     exit 1
-  fi
-  QMCOMP="qtchooser -run-tool=qmake -qt=$VERSION"
-  echo "compiler command: \"$QMCOMP\""
-else
-  echo "!!!!!!!! it seems you don't have qt5 installed, aborting compilation !!!!!!!!"
-  exit 1
 fi
+
+for pkg in qt5 libelf boost; do
+    if [[ `brew list -1 | grep -q "^${pkg}\$"` != 0 ]]; then
+        echo "Package '$pkg' is not installed"
+        echo "Run: brew install $pkg"
+    fi
+done
+
+QMCOMP=$(brew --prefix qt5)/bin/qmake
 
 ./configure
 

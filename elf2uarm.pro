@@ -1,4 +1,4 @@
-QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11
 QMAKE_LIBS += -lelf
 TARGET = elf2uarm
 
@@ -13,3 +13,8 @@ HEADERS += \
 
 SOURCES += \
     services/elf2arm.cc
+
+INCLUDEPATH += /usr/local/include
+LIBS += -L/usr/local/lib
+CONFIG -= app_bundle
+DEFINES += MACOS_BUILD

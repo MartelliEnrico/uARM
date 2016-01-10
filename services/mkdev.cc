@@ -35,9 +35,10 @@
 #include <string.h>
 #include <errno.h>
 
-#include <armProc/const.h>
-#include <armProc/types.h>
-#include <armProc/blockdev_params.h>
+#include "armProc/const.h"
+#include "armProc/types.h"
+#include "armProc/blockdev_params.h"
+#include "armProc/aout.h"
 
 #define UARMFILETYPE	".uarm"
 
@@ -50,12 +51,12 @@ HIDDEN char diskDflFName[] = "disk0";
 
 // default disk header parameters (see h/blockdev.h)
 HIDDEN unsigned int driveDfl[DRIVEPNUM] =	{	DFLCYL,
-												DFLHEAD, 
-												DFLSECT,
-												DFLROTTIME, 
-												DFLSEEKTIME,
-												DFLDATAS
-											};
+                                                DFLHEAD,
+                                                DFLSECT,
+                                                DFLROTTIME,
+                                                DFLSEEKTIME,
+                                                DFLDATAS
+                                          };
 
 //
 // Program functions
@@ -82,21 +83,21 @@ HIDDEN bool StrToWord(const char * str, Word * value);
 // Returns an EXIT_SUCCESS/FAILURE code
 int main(int argc, char* argv[])
 {
-    int ret = EXIT_SUCCESS;
+	int ret = EXIT_SUCCESS;
 
-    if (argc == 1)
-        showHelp(argv[0]);
-    else if (SAMESTRING("-d", argv[1]))
-        ret = mkDisk(argc, argv);
-    else if (SAMESTRING("-t", argv[1]))
-        ret = mkTape(argc, argv);
-    else {
-        fprintf(stderr, "%s : Unknown argument(s)\n", argv[0]);
-        showHelp(argv[0]);
-        ret = EXIT_FAILURE;
-    }
+	if (argc == 1)
+		showHelp(argv[0]);
+	else if (SAMESTRING("-d", argv[1]))
+		ret = mkDisk(argc, argv);
+	else if (SAMESTRING("-t", argv[1]))
+		ret = mkTape(argc, argv);
+	else {
+		fprintf(stderr, "%s : Unknown argument(s)\n", argv[0]);
+		showHelp(argv[0]);
+		ret = EXIT_FAILURE;
+	}
 
-    return ret;
+	return ret;
 }
 
 /****************************************************************************/
@@ -106,39 +107,39 @@ int main(int argc, char* argv[])
 // This function prints a warning/help message on standard error
 HIDDEN void showHelp(const char * prgName)
 {
-    fprintf(stderr, "%s syntax : %s {-d | -t} [parameters..]\n\n", prgName, prgName);
-    fprintf(stderr, "%s -d <diskfile%s> [cyl [head [sect [rpm [seekt [datas]]]]]]\n\n",prgName, UARMFILETYPE);
-    fprintf(stderr, "where:\n\ncyl = no. of cylinders\t\t[1..%u]\t(default = %u)\n", MAXCYL, driveDfl[CYLNUM]);
-    fprintf(stderr, "head = no. of heads\t\t[1..%u]\t(default = %u)\n", MAXHEAD, driveDfl[HEADNUM]);
-    fprintf(stderr, "sect = no. of sectors\t\t[1..%u]\t(default = %u)\n", MAXSECT, driveDfl[SECTNUM]); 
-    fprintf(stderr, "\nrpm = disk rotations per min.\t\t[%u..%u]\t(default = %.0f)\n", MINRPM, MAXRPM, 6E7F / driveDfl[ROTTIME]);
-    fprintf(stderr, "seekt = avg. cyl2cyl time (microsecs.)\t[1..%u]\t(default = %u)\n", MAXSEEKTIME, driveDfl[SEEKTIME]);
-    fprintf(stderr, "datas = sector data occupation %%\t[%u%%..%u%%]\t(default = %u%%)\n", MINDATAS, MAXDATAS, driveDfl[DATASECT]); 
-    fprintf(stderr, "\n<diskfile> = disk image file name\t\t(default = %s%s)\n", diskDflFName, UARMFILETYPE);
-    fprintf(stderr, "\n\n%s -t <tapefile%s> <file> [file]...\n\n", prgName, UARMFILETYPE);
-    fprintf(stderr, "where:\n\n<tapefile%s> = tape image file name\n\n", UARMFILETYPE);
+	fprintf(stderr, "%s syntax : %s {-d | -t} [parameters..]\n\n", prgName, prgName);
+	fprintf(stderr, "%s -d <diskfile%s> [cyl [head [sect [rpm [seekt [datas]]]]]]\n\n", prgName, UARMFILETYPE);
+	fprintf(stderr, "where:\n\ncyl = no. of cylinders\t\t[1..%u]\t(default = %u)\n", MAXCYL, driveDfl[CYLNUM]);
+	fprintf(stderr, "head = no. of heads\t\t[1..%u]\t(default = %u)\n", MAXHEAD, driveDfl[HEADNUM]);
+	fprintf(stderr, "sect = no. of sectors\t\t[1..%u]\t(default = %u)\n", MAXSECT, driveDfl[SECTNUM]);
+	fprintf(stderr, "\nrpm = disk rotations per min.\t\t[%u..%u]\t(default = %.0f)\n", MINRPM, MAXRPM, 6E7F / driveDfl[ROTTIME]);
+	fprintf(stderr, "seekt = avg. cyl2cyl time (microsecs.)\t[1..%u]\t(default = %u)\n", MAXSEEKTIME, driveDfl[SEEKTIME]);
+	fprintf(stderr, "datas = sector data occupation %%\t[%u%%..%u%%]\t(default = %u%%)\n", MINDATAS, MAXDATAS, driveDfl[DATASECT]);
+	fprintf(stderr, "\n<diskfile> = disk image file name\t\t(default = %s%s)\n", diskDflFName, UARMFILETYPE);
+	fprintf(stderr, "\n\n%s -t <tapefile%s> <file> [file]...\n\n", prgName, UARMFILETYPE);
+	fprintf(stderr, "where:\n\n<tapefile%s> = tape image file name\n\n", UARMFILETYPE);
 }
 
 
 // This function builds an empty disk image file, putting geometry and
 // performance figures (by default or passed as command line arguments)
 // in file header.
-// Returns an EXIT_SUCCESS/FAILURE code 
+// Returns an EXIT_SUCCESS/FAILURE code
 HIDDEN int mkDisk(int argc, char * argv[])
 {
 	char * diskFile;
 	int i;
 	bool error = false;
 	int ret = EXIT_SUCCESS;
-	
-    if (argc < 3 || argc > 9 || strstr(argv[2], UARMFILETYPE) == NULL)
+
+	if (argc < 3 || argc > 9 || strstr(argv[2], UARMFILETYPE) == NULL)
 	{
 		// too many or too few args
-		fprintf(stderr, "%s : disk image file parameters wrong/missing\n", argv[0]); 
+		fprintf(stderr, "%s : disk image file parameters wrong/missing\n", argv[0]);
 		ret = EXIT_FAILURE;
 	}
 	else
-	{ 
+	{
 		// start argument decoding
 		diskFile = argv[2];
 		if (argc == 3)
@@ -148,40 +149,40 @@ HIDDEN int mkDisk(int argc, char * argv[])
 		{
 			// scan args and places them in driveDfl[]
 			for (i = 0; i < argc - 3 && !error; i++)
-				error = decodeDriveP(i, &(driveDfl[i]), argv[i + 3]);	
+				error = decodeDriveP(i, &(driveDfl[i]), argv[i + 3]);
 			if (!error)
 				// build file images
 				ret = writeDisk(argv[0], argv[2]);
 			else
 			{
-				fprintf(stderr, "%s : disk image file parameters wrong/missing\n", argv[0]); 
+				fprintf(stderr, "%s : disk image file parameters wrong/missing\n", argv[0]);
 				ret = EXIT_FAILURE;
 			}
 		}
 	}
-	return(ret);
+	return (ret);
 }
 
 
 // This function builds a tape image file from a list of data files passed
 // as command line arguments. Each data file is split into BLOCKSIZE blocks
 // with a end-of-block-marker at the end; each file ends with an end-of-file
-// marker and tape ends itself with an end-of tape marker. 
+// marker and tape ends itself with an end-of tape marker.
 // Returns an EXIT_SUCCESS/FAILURE code
 HIDDEN int mkTape(int argc, char * argv[])
-{	
+{
 	FILE * tfile = NULL;
 	FILE * rfile = NULL;
-	Word blk[BLOCKSIZE]; 
+	Word blk[BLOCKSIZE];
 	Word tapeid = TAPEFILEID;
 	Word eof = TAPEEOF;
 	Word eot = TAPEEOT;
 	Word eob = TAPEEOB;
-		
+
 	int i, j;
 	int ret = EXIT_SUCCESS;
-	
-    if (argc < 4 || strstr(argv[2], UARMFILETYPE) == NULL)
+
+	if (argc < 4 || strstr(argv[2], UARMFILETYPE) == NULL)
 	{
 		// too few args
 		fprintf(stderr, "%s : file name(s) wrong/missing\n", argv[0]);
@@ -191,59 +192,58 @@ HIDDEN int mkTape(int argc, char * argv[])
 	{
 		// tries to open output file
 		if ((tfile = fopen(argv[2], "w")) == NULL || \
-			fwrite((void *) &tapeid, WORDLEN, 1, tfile) != 1)
+		        fwrite((void *) &tapeid, WORDLEN, 1, tfile) != 1)
 			ret = EXIT_FAILURE;
 		else
 		{
 			// loops thru arguments trying to process each data file
 			for (i = 3; i < argc && ret != EXIT_FAILURE; i++)
-				if((rfile = fopen(argv[i], "r")) == NULL)
+				if ((rfile = fopen(argv[i], "r")) == NULL)
 					ret = EXIT_FAILURE;
 				else
 				{
 					// file exists and is readable: process it
-					
+
 					// .core files should be stripped of magic file tag for
 					// .alignment reasons
 					testForCore(rfile);
-					
+
 					// splits file into blocks inside the tape image
 					while (!feof(rfile))
 					{
 						// clear block
 						for (j = 0; j < BLOCKSIZE; j++)
 							blk[j] = 0UL;
-							
+
 						if (fread((void *) blk, WORDLEN, BLOCKSIZE, rfile) > 0)
 							// copy block to output file
 							fwrite((void *) blk, WORDLEN, BLOCKSIZE, tfile);
 						else
 							// EOF: rewind output file to write EOF/EOT marker
 							fseek(tfile, -WORDLEN, SEEK_CUR);
-							
+
 						if (!feof(rfile))
 							// marks end-of-block
 							fwrite((void *) &eob, WORDLEN, 1, tfile);
+						else if (i < (argc - 1))
+							// more files to be processed: marks end-of-file
+							fwrite((void *) &eof, WORDLEN, 1, tfile);
 						else
-							if (i < (argc - 1))
-								// more files to be processed: marks end-of-file
-								fwrite((void *) &eof, WORDLEN, 1, tfile); 
-							else
-								// marks end-of-tape
-								fwrite((void *) &eot, WORDLEN, 1, tfile);
+							// marks end-of-tape
+							fwrite((void *) &eot, WORDLEN, 1, tfile);
 					}
 					fclose(rfile);
 				}
-			
-			// tries to close tape image file	
+
+			// tries to close tape image file
 			if (fclose(tfile) != 0)
 				ret = EXIT_FAILURE;
 		}
-	
+
 		if (ret == EXIT_FAILURE)
 			fprintf(stderr, "%s : error writing tape file image %s : %s\n", argv[0], argv[2], strerror(errno));
 	}
-	return(ret);
+	return (ret);
 }
 
 
@@ -256,67 +256,67 @@ HIDDEN bool decodeDriveP(int idx, unsigned int * par, const char * str)
 {
 	Word temp;
 	bool error = false;
-	
+
 	if (!StrToWord(str, &temp))
 		// error decoding parameter
 		error = true;
-	else 
+	else
 		switch (idx)
 		{
-			// argument decoded by position on command line
-			// min and max values are checked if needed
-			
-			case CYLNUM:
-				if (INBOUNDS(temp, 1, MAXCYL + 1))
-					*par = (unsigned int) temp;
-				else 
-					error = true;
-				break;
-			
-			case HEADNUM:
-				if (INBOUNDS(temp, 1, MAXHEAD + 1))
-					*par = (unsigned int) temp;
-				else 
-					error = true;
-				break;
-			
-			case SECTNUM:
-				if (INBOUNDS(temp, 1, MAXSECT + 1))
-					*par = (unsigned int) temp;
-				else 
-					error = true;
-				break;
-			
-			case ROTTIME:
-				if (INBOUNDS(temp, MINRPM, MAXRPM + 1))
-					*par = (unsigned int) (6E7F / temp);
-				else 
-					error = true;
-				break;
-			
-			case SEEKTIME:
-				if (INBOUNDS(temp, 1, MAXSEEKTIME + 1))
-					*par = (unsigned int) temp;
-				else 
-					error = true;
-				break;
-			
-			case DATASECT:
-				if (INBOUNDS(temp, MINDATAS, MAXDATAS + 1))
-					*par = (unsigned int) temp;
-				else 
-					error = true;
-				break;
-			
-			default:
-				// unknown parameter
+		// argument decoded by position on command line
+		// min and max values are checked if needed
+
+		case CYLNUM:
+			if (INBOUNDS(temp, 1, MAXCYL + 1))
+				*par = (unsigned int) temp;
+			else
+				error = true;
+			break;
+
+		case HEADNUM:
+			if (INBOUNDS(temp, 1, MAXHEAD + 1))
+				*par = (unsigned int) temp;
+			else
+				error = true;
+			break;
+
+		case SECTNUM:
+			if (INBOUNDS(temp, 1, MAXSECT + 1))
+				*par = (unsigned int) temp;
+			else
+				error = true;
+			break;
+
+		case ROTTIME:
+			if (INBOUNDS(temp, MINRPM, MAXRPM + 1))
+				*par = (unsigned int) (6E7F / temp);
+			else
+				error = true;
+			break;
+
+		case SEEKTIME:
+			if (INBOUNDS(temp, 1, MAXSEEKTIME + 1))
+				*par = (unsigned int) temp;
+			else
+				error = true;
+			break;
+
+		case DATASECT:
+			if (INBOUNDS(temp, MINDATAS, MAXDATAS + 1))
+				*par = (unsigned int) temp;
+			else
+				error = true;
+			break;
+
+		default:
+			// unknown parameter
 			error = true;
 		}
-	return(error);			
+	return (error);
 }
 
 
-// This function creates the disk image file on the disk, prepending it with 
+// This function creates the disk image file on the disk, prepending it with
 // a header containing geometry and performance figures.
 // A number of 512-byte empty blocks is created, depending on disk geometry.
 // Returns an EXIT_SUCCESS/FAILURE code
@@ -324,35 +324,35 @@ HIDDEN int writeDisk(const char * prg, const char * fname)
 {
 	FILE * dfile = NULL;
 	int ret = EXIT_SUCCESS;
-	
+
 	unsigned int i;
 	unsigned int dfsize = driveDfl[CYLNUM] * driveDfl[HEADNUM] * driveDfl[SECTNUM];
 	Word blk[BLOCKSIZE];
 	Word diskid = DISKFILEID;
-	
+
 	// clears block
 	for (i = 0; i < BLOCKSIZE; i++)
 		blk[i] = 0;
 
-	// tries to open image file and write header	
+	// tries to open image file and write header
 	if ((dfile = fopen(fname, "w")) == NULL || \
-		fwrite((void *) &diskid, WORDLEN, 1, dfile) != 1 || \
-		fwrite((void *) driveDfl, sizeof(unsigned int), DRIVEPNUM, dfile)  != DRIVEPNUM)
+	        fwrite((void *) &diskid, WORDLEN, 1, dfile) != 1 || \
+	        fwrite((void *) driveDfl, sizeof(unsigned int), DRIVEPNUM, dfile)  != DRIVEPNUM)
 		ret = EXIT_FAILURE;
 	else
 	{
-		// writes empty blocks 
+		// writes empty blocks
 		for (i = 0; i < dfsize && ret != EXIT_FAILURE; i++)
 			if (fwrite((void *) blk, WORDLEN, BLOCKSIZE, dfile) != BLOCKSIZE)
 				ret = EXIT_FAILURE;
 		if (fclose(dfile) != 0)
 			ret = EXIT_FAILURE;
 	}
-	
+
 	if (ret == EXIT_FAILURE)
 		fprintf(stderr, "%s : error writing disk file image %s : %s\n", prg, fname, strerror(errno));
 
-	return(ret);
+	return (ret);
 }
 
 
@@ -362,7 +362,7 @@ HIDDEN int writeDisk(const char * prg, const char * fname)
 HIDDEN void testForCore(FILE * rfile)
 {
 	Word tag;
-	
+
 	// file existence have been tested by caller
 	if (fread((void *) &tag, WORDLEN, 1, rfile) == 0 || tag != COREFILEID)
 		// file is empty or not .core
@@ -379,8 +379,8 @@ HIDDEN bool StrToWord(const char * str, Word * value)
 	bool valid = true;
 
 	// tries to convert the string into a unsigned long
-	*value = strtoul(str, &endp, 0); 
-	
+	*value = strtoul(str, &endp, 0);
+
 	if (endp != NULL)
 	{
 		// there may be some garbage
@@ -391,7 +391,7 @@ HIDDEN bool StrToWord(const char * str, Word * value)
 			endp++;
 		}
 	}
-	return(valid);
-} 
+	return (valid);
+}
 
-	
+

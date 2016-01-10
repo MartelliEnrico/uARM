@@ -43,8 +43,13 @@
 #include <stdarg.h>
 #include <errno.h>
 
+#ifdef MACOS_BUILD
+#include <libelf/libelf.h>
+#include <libelf/gelf.h>
+#else
 #include <libelf.h>
 #include <gelf.h>
+#endif
 
 #include "services/util.h"
 #include "services/debug.h"
@@ -321,7 +326,7 @@ static void elf2aout(bool isCore)
 
     uint32_t header[N_AOUT_HDR_ENT];
     std::fill_n(header, N_AOUT_HDR_ENT, 0);
-    if(isCore)
+    if (isCore)
         header[AOUT_HE_TAG] = COREFILEID;
     else
         header[AOUT_HE_TAG] = AOUTFILEID;
@@ -491,8 +496,8 @@ static void createSymbolTable()
         unsigned char type = ELF32_ST_TYPE(s.details->st_info);
         unsigned char binding = ELF32_ST_BIND(s.details->st_info);
         if (!s.name.empty() &&
-            (type == STT_FUNC || type == STT_OBJECT) &&
-            (s.name[0] != '_' || s.name == "__start"))
+                (type == STT_FUNC || type == STT_OBJECT) &&
+                (s.name[0] != '_' || s.name == "__start"))
         {
             rc = fprintf(file, "%-32.32s :%s:0x%.8lX:0x%.8lX:%s\n",
                          s.name.c_str(),
@@ -513,7 +518,7 @@ static void createSymbolTable()
 
     // Write symbol counts
     if (fseek(file, sizeof(tag), SEEK_SET) ||
-        fprintf(file, "%.8X %.8X", (unsigned int) funCount, (unsigned int) objCount) < 0)
+            fprintf(file, "%.8X %.8X", (unsigned int) funCount, (unsigned int) objCount) < 0)
     {
         fatalError("Error writing symbol table file `%s': %s", outName.c_str(), strerror(errno));
     }
@@ -537,8 +542,8 @@ static void elf2bios()
         if (sh == NULL)
             elfError();
         if ((sh->sh_type == SHT_PROGBITS) &&
-            (sh->sh_flags & SHF_ALLOC) &&
-            (sh->sh_flags & SHF_EXECINSTR))
+                (sh->sh_flags & SHF_ALLOC) &&
+                (sh->sh_flags & SHF_EXECINSTR))
         {
             break;
         }
@@ -558,11 +563,11 @@ static void elf2bios()
     uint32_t tag = toTargetEndian(BIOSFILEID);
     uint32_t size = 0;
     forEachSectionData(sd, data)
-        if (data->d_type == ELF_T_BYTE)
-            size += data->d_size / 4;
+    if (data->d_type == ELF_T_BYTE)
+        size += data->d_size / 4;
     size = toTargetEndian(size);
     if (fwrite(&tag, sizeof(tag), 1, file) != 1 ||
-        fwrite(&size, sizeof(size), 1, file) != 1)
+            fwrite(&size, sizeof(size), 1, file) != 1)
     {
         fatalError("Error writing BIOS file `%s': %s", outName.c_str(), strerror(errno));
     }
